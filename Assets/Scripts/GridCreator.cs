@@ -39,7 +39,7 @@ public class GridCreator : MonoBehaviour {
 			}
 		}
 
-		AttachPieceToCell (PieceManager.PieceID.RED, 2, 2);
+		//AttachPieceToCell (PieceManager.PieceID.RED, 2, 2);
 	}
 
 	public void AttachPieceToCell(PieceManager.PieceID pieceID, int x, int y)
@@ -47,7 +47,12 @@ public class GridCreator : MonoBehaviour {
 		GameObject prefab = PieceManager.Instance.GetPiecePrefab (pieceID);
 		GameObject cell = m_grid [x, y];
 		cell.transform.DetachChildren ();
-		Instantiate (prefab, cell.transform);
+		GameObject newPiece = Instantiate (prefab, cell.transform);
+
+		// make the new piece the same size as the cell
+		RectTransform rt = newPiece.transform as RectTransform;
+		Rect sourceRect = (cell.transform as RectTransform).rect;
+		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
 	}
 
 	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)

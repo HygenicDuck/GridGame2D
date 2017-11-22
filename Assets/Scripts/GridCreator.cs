@@ -46,16 +46,25 @@ public class GridCreator : MonoBehaviour {
 	{
 		GameObject prefab = PieceManager.Instance.GetPiecePrefab (pieceID);
 		GameObject cell = m_grid [x, y];
-		cell.transform.DetachChildren ();
+        DestroyChildren(cell.transform);
 		GameObject newPiece = Instantiate (prefab, cell.transform);
 
 		// make the new piece the same size as the cell
 		RectTransform rt = newPiece.transform as RectTransform;
 		Rect sourceRect = (cell.transform as RectTransform).rect;
 		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
-	}
+    }
 
-	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
+    void DestroyChildren(Transform t)
+    {
+        for (int i = t.childCount - 1; i >= 0; --i)
+        {
+            GameObject child = t.GetChild(i).gameObject;
+            Destroy(child);
+        }
+    }
+
+public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 	{
 		for (int y = 0; y < m_gridYDim; y++)
 		{

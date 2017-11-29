@@ -10,7 +10,7 @@ public class GridCreator : MonoBehaviour {
 	[SerializeField] GameObject m_emptyCellPrefab;
 	[SerializeField] Camera m_camera;
 
-	GameObject[,] m_grid;
+	GridCell[,] m_grid;
 
 	// Use this for initialization
 	void Start () 
@@ -29,13 +29,14 @@ public class GridCreator : MonoBehaviour {
 		Debug.Log("cellSize = "+cellSize.x+", "+cellSize.y);
 		glg.cellSize = cellSize;
 
-		m_grid = new GameObject[m_gridXDim,m_gridYDim];
+		m_grid = new GridCell[m_gridXDim,m_gridYDim];
 
 		for (int y = 0; y < m_gridYDim; y++)
 		{
 			for (int x = 0; x < m_gridXDim; x++)
 			{
-				m_grid[x,y] = Instantiate (m_emptyCellPrefab, transform);
+				GameObject cellObj = Instantiate (m_emptyCellPrefab, transform);
+				m_grid [x, y] = cellObj.GetComponent<GridCell> ();
 			}
 		}
 
@@ -45,9 +46,10 @@ public class GridCreator : MonoBehaviour {
 	public void AttachPieceToCell(PieceManager.PieceID pieceID, int x, int y)
 	{
 		GameObject prefab = PieceManager.Instance.GetPiecePrefab (pieceID);
-		GameObject cell = m_grid [x, y];
-        DestroyChildren(cell.transform);
-		GameObject newPiece = Instantiate (prefab, cell.transform);
+		GridCell cell = m_grid [x, y];
+        cell.RemovePiece();
+		GameObject newPiece = Instantiate (prefab);
+		cell.AttachPiece (newPiece);
 
 		// make the new piece the same size as the cell
 		RectTransform rt = newPiece.transform as RectTransform;
@@ -55,16 +57,16 @@ public class GridCreator : MonoBehaviour {
 		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
     }
 
-    void DestroyChildren(Transform t)
-    {
-        for (int i = t.childCount - 1; i >= 0; --i)
-        {
-            GameObject child = t.GetChild(i).gameObject;
-            Destroy(child);
-        }
-    }
+//    void DestroyChildren(Transform t)
+//    {
+//        for (int i = t.childCount - 1; i >= 0; --i)
+//        {
+//            GameObject child = t.GetChild(i).gameObject;
+//            Destroy(child);
+//        }
+//    }
 
-public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
+	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 	{
 		for (int y = 0; y < m_gridYDim; y++)
 		{
@@ -78,6 +80,13 @@ public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 		}
 
 		return IntVec2.NULL;
+	}
+
+	public Piece GetPieceAt(int x, int y)
+	{
+		GridCell cell = m_grid [x, y];
+		Piece piece = cell.GetAttachedPiece ();
+		return piece;
 	}
 	
 	// Update is called once per frame

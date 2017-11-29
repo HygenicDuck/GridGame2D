@@ -55,6 +55,12 @@ public class GridCreator : MonoBehaviour {
 		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
     }
 
+	public void RemovePieceFromCell(int x, int y)
+	{
+		GridCell cell = m_grid [x, y];
+		cell.RemovePiece();
+	}
+
 
 	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 	{

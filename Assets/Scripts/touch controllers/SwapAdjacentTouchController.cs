@@ -47,32 +47,26 @@ public class SwapAdjacentTouchController : TouchController
 			IntVec2 gridPos1 = m_gridCreator.GridPosFromTouchPos (m_touchPosition);
 			IntVec2 gridPos2 = m_gridCreator.GridPosFromTouchPos (m_touchPosition + diff);
 
-			Debug.Log ("gridPos1 = "+gridPos1.x+", "+gridPos1.y);
-			Debug.Log ("gridPos2 = "+gridPos2.x+", "+gridPos2.y);
-
 			if (gridPos1 != gridPos2)
 			{
 				// we dragged far enough to cause a swap
 
 				// make sure we havent dragged more than one cell
-//				IntVec2 iDiff = (gridPos2 - gridPos1);
-//				iDiff.x = (int)Mathf.Sign (iDiff.x);
-//				iDiff.y = (int)Mathf.Sign (iDiff.y);
-//				gridPos2 = gridPos1 + iDiff;
-//				Debug.Log ("iDiff = "+iDiff.x+", "+iDiff.y);
+				IntVec2 iDiff = (gridPos2 - gridPos1);
+				if (iDiff.x > 1)
+					iDiff.x = 1;
+				if (iDiff.y > 1)
+					iDiff.y = 1;
+				if (iDiff.x < -1)
+					iDiff.x = -1;
+				if (iDiff.y < -1)
+					iDiff.y = -1;
+				gridPos2 = gridPos1 + iDiff;
 
 				GameControllerBase.Instance.MovePiece (gridPos1, gridPos2);
 
 				m_touching = false;
 			}
-				
-//			Vector3 worldTouchPos = m_camera.ScreenToWorldPoint(m_touchPosition);
-//			Vector3 worldMousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
-//			Vector3 dPos = worldMousePos - worldTouchPos;
-//			m_touchPosition = Input.mousePosition;
-//			Vector3 pos = transform.position;
-//			pos += dPos;
-//			transform.position = pos;
 		}
 	}
 

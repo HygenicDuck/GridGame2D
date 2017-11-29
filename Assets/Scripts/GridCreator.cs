@@ -21,8 +21,8 @@ public class GridCreator : MonoBehaviour {
 		m_instance = this;
 	}
 
-	[SerializeField] int m_gridXDim;
-	[SerializeField] int m_gridYDim;
+	[SerializeField] public int m_gridXDim;
+	[SerializeField] public int m_gridYDim;
 	[SerializeField] GameObject m_emptyCellPrefab;
 	[SerializeField] Camera m_camera;
 
@@ -54,6 +54,13 @@ public class GridCreator : MonoBehaviour {
 				GameObject cellObj = Instantiate (m_emptyCellPrefab, transform);
 				m_grid [x, y] = cellObj.GetComponent<GridCell> ();
 			}
+		}
+
+		yield return null;
+		GridInitialiser initialiser = GridInitialiser.Instance;
+		if (initialiser != null)
+		{
+			initialiser.Initialise ();
 		}
 	}
 

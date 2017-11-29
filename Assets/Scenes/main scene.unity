@@ -376,8 +376,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1211013168}
-  - component: {fileID: 1211013167}
   - component: {fileID: 1211013169}
+  - component: {fileID: 1211013167}
+  - component: {fileID: 1211013170}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -391,9 +392,9 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1211013166}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90acf2a9d639a46afb07b3724055b266, type: 3}
+  m_Script: {fileID: 11500000, guid: ec6242b82b26541e5b8fb0561fc94cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1211013168
@@ -423,6 +424,23 @@ MonoBehaviour:
   m_gridCreator: {fileID: 33736496}
   m_usedPiece: {fileID: 1678665778189816, guid: a5535d30c7c6a4949a1e9c9b3bd2412d,
     type: 2}
+--- !u!114 &1211013170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1211013166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c6805a1bcc247a786946a60a1c5014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_piecesPrefabs:
+  - {fileID: 1678665778189816, guid: 07b19964f14514c4e88afa91e3f6e4c1, type: 2}
+  - {fileID: 1502508996372634, guid: 5303c4a67459a4532958b1c0ae4b9a61, type: 2}
+  - {fileID: 1481486739325412, guid: c3072e74725a44106b770281b8ce4de2, type: 2}
+  - {fileID: 1918264300606380, guid: 6b2d9692d543844c9989e3f63e8684b8, type: 2}
+  - {fileID: 1918264300606380, guid: ac8b15445e5494398822ee805e384293, type: 2}
 --- !u!1 &1739463486
 GameObject:
   m_ObjectHideFlags: 0

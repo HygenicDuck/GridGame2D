@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DragAndDrop : MonoBehaviour 
 {
-	[SerializeField]
+	//[SerializeField]
 	Vector2 m_touchAreaSize;
 
 	Camera m_camera;
@@ -21,6 +21,9 @@ public class DragAndDrop : MonoBehaviour
 		{
 			m_camera = camera.GetComponent<Camera>();
 		}
+
+		RectTransform rt = transform as RectTransform;
+		m_touchAreaSize = new Vector2 (rt.rect.width/2, rt.rect.height/2);
 	}
 
 	// Update is called once per frame

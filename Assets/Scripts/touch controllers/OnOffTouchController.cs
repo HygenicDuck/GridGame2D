@@ -40,11 +40,15 @@ public class OnOffTouchController : TouchController
 		Piece piece = m_gridCreator.GetPieceAt (gridPos.x, gridPos.y);
 		if (piece == null)
 		{
-			m_gridCreator.AttachPieceToCell (m_usedPiece, gridPos.x, gridPos.y);
+			m_gridCreator.AttachNewPieceToCell (m_usedPiece, gridPos.x, gridPos.y);
 		}
 		else
 		{
-			m_gridCreator.RemovePieceFromCell (gridPos.x, gridPos.y);
+			if (piece.GetComponent<DragAndDrop> () == null)
+			{
+				Piece deletedPiece = m_gridCreator.RemovePieceFromCell (gridPos.x, gridPos.y);
+				Destroy (deletedPiece.gameObject);
+			}
 		}
 	}
 }

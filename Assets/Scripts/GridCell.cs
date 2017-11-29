@@ -12,18 +12,23 @@ public class GridCell : MonoBehaviour
 		return m_pieceParent.GetComponentInChildren<Piece> ();
 	}
 
-	public void RemovePiece()
+	public Piece RemovePiece()
 	{
+		Piece piece = null;
+
 		Transform t = m_pieceParent.transform;
 
 		for (int i = t.childCount - 1; i >= 0; --i)
 		{
 			GameObject child = t.GetChild(i).gameObject;
-			Destroy(child);
+			child.transform.SetParent(null);
+			piece = child.GetComponent<Piece> ();
 		}
+
+		return piece;
 	}
 
-	public void AttachPiece(GameObject piece)
+	public void AttachPiece(Piece piece)
 	{
 		Transform t = m_pieceParent.transform;
 		piece.transform.SetParent (t);

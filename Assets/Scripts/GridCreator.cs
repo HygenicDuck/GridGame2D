@@ -178,7 +178,16 @@ public class GridCreator : MonoBehaviour {
 		if (!previousGridPos.IsNull())
 		{
 			RemovePieceFromCell (previousGridPos.x, previousGridPos.y);
+
+			Piece displacedPiece = GetPieceAt (newPos.x, newPos.y);
+
+			// default behaviour - swap the displaced piece into the space vacated by the moved piece.
+			if (displacedPiece != null)
+			{
+				MovePiece (displacedPiece, previousGridPos);
+			}
 		}
+
 		AttachExistingPieceToCell (piece, newPos.x, newPos.y);
 	}
 
@@ -187,40 +196,13 @@ public class GridCreator : MonoBehaviour {
 		IntVec2 gridPos = GridPosFromWorldPos (piece.transform.position);
 		if (gridPos.IsNull())
 		{
-			// put it back where it was
+			// off the grid. Put it back where it was
 			piece.transform.localPosition = Vector3.zero;
 			return false;
 		}
 
 		MovePiece (piece, gridPos);
 
-
 		return true;
-
-//		// returns false if it wasn't dropped in a valid location
-//		Vector3 touchPos = m_camera.WorldToScreenPoint(piece.transform.position);
-//		IntVec2 gridPos = GetGridPosFromTouchPosition(touchPos);
-//		IntVec2 previousGridPos = FindAnimalInGrid (piece.GetComponent<Animal> ());
-//		piece.transform.localPosition = Vector3.zero;
-//		int queueItemIndex = QueuePositionFromGameObject(piece);
-//
-//		AnimalDef droppedAnimalDef;
-//		if (queueItemIndex >= 0)
-//		{
-//			droppedAnimalDef = m_animalQueue.QueuePosition (queueItemIndex);
-//		} else
-//		{
-//			Animal droppedAnimal = piece.GetComponent<Animal> ();
-//			droppedAnimalDef = droppedAnimal.GetDef ();
-//		}
-//
-//		if (!gridPos.IsInvalid ())
-//		{
-//			// destroy the piece that you were carrying.
-//			piece.transform.parent = null;
-//			Destroy (piece);
-//		}
-//
-//		return TryToPlacePiece(gridPos, previousGridPos, queueItemIndex, droppedAnimalDef);
 	}
 }

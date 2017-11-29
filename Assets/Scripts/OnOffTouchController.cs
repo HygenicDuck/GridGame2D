@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OnOffTouchController : TouchController 
 {
-	[SerializeField] PieceManager.PieceID m_usedPiece;
+	[SerializeField] GameObject m_usedPiece;
 
 
 	Vector2 m_touchPosition;

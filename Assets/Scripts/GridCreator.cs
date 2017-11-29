@@ -41,12 +41,11 @@ public class GridCreator : MonoBehaviour {
 		}
 	}
 
-	public void AttachPieceToCell(PieceManager.PieceID pieceID, int x, int y)
+	public void AttachPieceToCell(GameObject piecePrefab, int x, int y)
 	{
-		GameObject prefab = PieceManager.Instance.GetPiecePrefab (pieceID);
 		GridCell cell = m_grid [x, y];
         cell.RemovePiece();
-		GameObject newPiece = Instantiate (prefab);
+		GameObject newPiece = Instantiate (piecePrefab);
 		cell.AttachPiece (newPiece);
 
 		// make the new piece the same size as the cell

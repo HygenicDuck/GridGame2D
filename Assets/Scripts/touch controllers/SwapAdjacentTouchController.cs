@@ -10,8 +10,9 @@ public class SwapAdjacentTouchController : TouchController
 	bool m_touching;
 
 	// Use this for initialization
-	void Start () {
-
+	void Start () 
+	{
+		GameControllerBase.Instance.m_dragAndDropIsActive = false;
 	}
 
 	// Update is called once per frame
@@ -49,7 +50,7 @@ public class SwapAdjacentTouchController : TouchController
 
 			if (gridPos1 != gridPos2)
 			{
-				// we dragged far enough to cause a swap
+				// we've dragged far enough to cause a swap
 
 				// make sure we havent dragged more than one cell
 				IntVec2 iDiff = (gridPos2 - gridPos1);

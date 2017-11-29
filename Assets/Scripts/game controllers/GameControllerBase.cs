@@ -20,6 +20,8 @@ public abstract class GameControllerBase : MonoBehaviour
 		m_instance = this;
 	}
 
+	public bool m_dragAndDropIsActive = true;
+
 	public abstract void MovePiece(Piece piece, IntVec2 newPos);
 
 	public void MovePiece(IntVec2 oldpos, IntVec2 newPos)

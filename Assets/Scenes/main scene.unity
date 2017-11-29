@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69de9e4f22f2440eb880e8be78ae1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gridXDim: 3
-  m_gridYDim: 3
+  m_gridXDim: 7
+  m_gridYDim: 7
   m_emptyCellPrefab: {fileID: 1360411960034220, guid: e91b9b557c92643fbb9c00267dc1752c,
     type: 2}
   m_camera: {fileID: 1148514179}
@@ -376,9 +376,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1211013168}
+  - component: {fileID: 1211013170}
   - component: {fileID: 1211013169}
   - component: {fileID: 1211013167}
-  - component: {fileID: 1211013170}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -394,9 +394,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1211013166}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec6242b82b26541e5b8fb0561fc94cc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 503acc28ec0b940bb9d79f35fa611cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gridCreator: {fileID: 33736496}
 --- !u!4 &1211013168
 Transform:
   m_ObjectHideFlags: 0
@@ -418,12 +419,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1211013166}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc16656d65fd94910b4ce9a19314654a, type: 3}
+  m_Script: {fileID: 11500000, guid: ec6242b82b26541e5b8fb0561fc94cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gridCreator: {fileID: 33736496}
-  m_usedPiece: {fileID: 1678665778189816, guid: a5535d30c7c6a4949a1e9c9b3bd2412d,
-    type: 2}
+  m_dragAndDropIsActive: 1
 --- !u!114 &1211013170
 MonoBehaviour:
   m_ObjectHideFlags: 0

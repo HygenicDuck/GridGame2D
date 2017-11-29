@@ -39,8 +39,6 @@ public class GridCreator : MonoBehaviour {
 				m_grid [x, y] = cellObj.GetComponent<GridCell> ();
 			}
 		}
-
-		//AttachPieceToCell (PieceManager.PieceID.RED, 2, 2);
 	}
 
 	public void AttachPieceToCell(PieceManager.PieceID pieceID, int x, int y)
@@ -57,14 +55,6 @@ public class GridCreator : MonoBehaviour {
 		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
     }
 
-//    void DestroyChildren(Transform t)
-//    {
-//        for (int i = t.childCount - 1; i >= 0; --i)
-//        {
-//            GameObject child = t.GetChild(i).gameObject;
-//            Destroy(child);
-//        }
-//    }
 
 	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 	{

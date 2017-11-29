@@ -35,6 +35,7 @@ public class PieceManager : MonoBehaviour {
 		BLUE,
 		YELLOW,
 		BLACK,
+		WHITE,
 		EMPTY
 	}
 

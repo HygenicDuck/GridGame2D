@@ -21,4 +21,10 @@ public abstract class GameControllerBase : MonoBehaviour
 	}
 
 	public abstract void MovePiece(Piece piece, IntVec2 newPos);
+
+	public void MovePiece(IntVec2 oldpos, IntVec2 newPos)
+	{
+		Piece piece = GridCreator.Instance.GetPieceAt (oldpos.x, oldpos.y);
+		MovePiece(piece, newPos);
+	}
 }

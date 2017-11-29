@@ -24,6 +24,16 @@ public struct IntVec2
 		return new IntVec2(c1.x - c2.x, c1.y - c2.y);
 	}
 
+	public static bool operator ==(IntVec2 c1, IntVec2 c2) 
+	{
+		return ((c1.x == c2.x) && (c1.y == c2.y));
+	}
+
+	public static bool operator !=(IntVec2 c1, IntVec2 c2) 
+	{
+		return ((c1.x != c2.x) || (c1.y != c2.y));
+	}
+
 	public static IntVec2 NULL
 	{
 		get

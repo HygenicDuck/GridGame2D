@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222714368564297818}
   - component: {fileID: 114122575956709528}
   - component: {fileID: 114768479563456820}
+  - component: {fileID: 114335300071611942}
   m_Layer: 5
   m_Name: Blue
   m_TagString: Untagged
@@ -56,6 +57,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114335300071611942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1502508996372634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948a5394023814df4b8333704470cbe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114768479563456820
 MonoBehaviour:
   m_ObjectHideFlags: 1

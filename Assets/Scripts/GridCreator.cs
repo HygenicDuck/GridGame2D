@@ -84,6 +84,44 @@ public class GridCreator : MonoBehaviour {
 	}
 
 
+	public bool IsAdjacent(IntVec2 pos1, IntVec2 pos2)
+	{
+		if (pos1.x > 0)
+		{
+			// check to the left
+			if ((pos2.x == pos1.x - 1) && (pos2.y == pos1.y))
+			{
+				return true;
+			}
+		}
+		if (pos1.y > 0)
+		{
+			// check above
+			if ((pos2.x == pos1.x) && (pos2.y == pos1.y - 1))
+			{
+				return true;
+			}
+		}
+		if (pos1.x < m_gridXDim-1)
+		{
+			// check to the right
+			if ((pos2.x == pos1.x + 1) && (pos2.y == pos1.y))
+			{
+				return true;
+			}
+		}
+		if (pos1.y < m_gridYDim-1)
+		{
+			// check below
+			if ((pos2.x == pos1.x) && (pos2.y == pos1.y + 1))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	public IntVec2 GridPosFromTouchPos(Vector3 touchPos)
 	{
 		for (int y = 0; y < m_gridYDim; y++)
@@ -172,24 +210,24 @@ public class GridCreator : MonoBehaviour {
 		
 	}
 
-	void MovePiece(Piece piece, IntVec2 newPos)
-	{
-		IntVec2 previousGridPos = FindPieceInGrid (piece);
-		if (!previousGridPos.IsNull())
-		{
-			RemovePieceFromCell (previousGridPos.x, previousGridPos.y);
-
-			Piece displacedPiece = GetPieceAt (newPos.x, newPos.y);
-
-			// default behaviour - swap the displaced piece into the space vacated by the moved piece.
-			if (displacedPiece != null)
-			{
-				MovePiece (displacedPiece, previousGridPos);
-			}
-		}
-
-		AttachExistingPieceToCell (piece, newPos.x, newPos.y);
-	}
+//	void MovePiece(Piece piece, IntVec2 newPos)
+//	{
+//		IntVec2 previousGridPos = FindPieceInGrid (piece);
+//		if (!previousGridPos.IsNull())
+//		{
+//			RemovePieceFromCell (previousGridPos.x, previousGridPos.y);
+//
+//			Piece displacedPiece = GetPieceAt (newPos.x, newPos.y);
+//
+//			// default behaviour - swap the displaced piece into the space vacated by the moved piece.
+//			if (displacedPiece != null)
+//			{
+//				MovePiece (displacedPiece, previousGridPos);
+//			}
+//		}
+//
+//		AttachExistingPieceToCell (piece, newPos.x, newPos.y);
+//	}
 
 	public bool PieceDropped(Piece piece)
 	{
@@ -201,7 +239,7 @@ public class GridCreator : MonoBehaviour {
 			return false;
 		}
 
-		MovePiece (piece, gridPos);
+		GameControllerBase.Instance.MovePiece (piece, gridPos);
 
 		return true;
 	}

@@ -41,8 +41,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948a5394023814df4b8333704470cbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_camera: {fileID: 0}
-  m_touchAreaSize: {x: 500, y: 500}
+  m_touchAreaSize: {x: 200, y: 200}
 --- !u!114 &114742189287432166
 MonoBehaviour:
   m_ObjectHideFlags: 1

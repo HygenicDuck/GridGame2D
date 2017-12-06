@@ -31,23 +31,23 @@ public class GridObserverMatch3 : GridObserver
 		}
 
 		ScanGridFor3InARow ();
+		DeleteAllMatchingGroups ();
+		RowsFallDown ();
 	}
 
 	void ScanGridFor3InARow()
 	{
 		m_matchingGroups = new List<Group> ();
 
-		for(int y=0; y<GridCreator.Instance.m_gridYDim; y++)
+		for(int y=0; y<m_gridCreator.m_gridYDim; y++)
 		{
-			for(int x=0; x<GridCreator.Instance.m_gridXDim; x++)
+			for(int x=0; x<m_gridCreator.m_gridXDim; x++)
 			{
 				IntVec2 pos = new IntVec2 (x, y);
 				CheckFor3InARow (pos, new IntVec2 (1, 0));
 				CheckFor3InARow (pos, new IntVec2 (0, 1));
 			}
 		}
-
-		DeleteAllMatchingGroups ();
 	}
 
 
@@ -98,5 +98,47 @@ public class GridObserverMatch3 : GridObserver
 			}
 			cellPos = cellPos + dPos;
 		}
+	}
+
+
+
+	void RowsFallDown()
+	{
+		for (int x = 0; x < m_gridCreator.m_gridYDim; x++)
+		{
+			SingleRowFallsDown(x);
+		}
+	}
+
+	void SingleRowFallsDown(int x)
+	{
+		int y = m_gridCreator.m_gridYDim - 1;
+		int dropDistance = 0;
+		while (y >= 0)
+		{
+			Piece piece = m_gridCreator.GetPieceAt (x, y);
+			if (piece == null)
+			{
+				dropDistance++;
+			}
+			else
+			{
+				MovePiece (new IntVec2 (x, y), new IntVec2 (x, y + dropDistance));
+			}
+
+			y -= 1;
+		}
+
+		// fill the gap left at the top with random pieces
+		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
+		{
+			m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
+		}
+	}
+
+	void MovePiece(IntVec2 from, IntVec2 to)
+	{
+		Piece piece = m_gridCreator.RemovePieceFromCell (from);
+		m_gridCreator.AttachExistingPieceToCell (piece, to.x, to.y);
 	}
 }

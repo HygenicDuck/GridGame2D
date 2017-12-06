@@ -21,4 +21,5 @@ public abstract class GridInitialiser : MonoBehaviour
 	}
 
 	public abstract void Initialise();
+	public abstract GameObject RandomPiecePrefab();
 }

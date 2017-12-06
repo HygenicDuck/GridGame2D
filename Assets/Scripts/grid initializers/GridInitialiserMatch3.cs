@@ -12,8 +12,13 @@ public class GridInitialiserMatch3 : GridInitialiser
 		{
 			for(int x=0; x<GridCreator.Instance.m_gridXDim; x++)
 			{
-				GridCreator.Instance.AttachNewPieceToCell(m_piecesPrefabs[UnityEngine.Random.Range(0,m_piecesPrefabs.Length)],x,y);
+				GridCreator.Instance.AttachNewPieceToCell(RandomPiecePrefab(),x,y);
 			}
 		}
+	}
+
+	public override GameObject RandomPiecePrefab()
+	{
+		return m_piecesPrefabs [UnityEngine.Random.Range (0, m_piecesPrefabs.Length)];
 	}
 }

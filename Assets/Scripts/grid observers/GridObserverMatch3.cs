@@ -155,7 +155,7 @@ public class GridObserverMatch3 : GridObserver
 		// fill the gap left at the top with random pieces
 		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
 		{
-			AddPieceAtTop (x, gapY, dropDistance);
+			StartCoroutine(AddPieceAtTopCoroutine (x, gapY, dropDistance));
 			//m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
 		}
 	}
@@ -196,12 +196,12 @@ public class GridObserverMatch3 : GridObserver
 	}
 
 
-	void AddPieceAtTop(int x, int y, int dropDistance)
+	IEnumerator AddPieceAtTopCoroutine(int x, int y, int dropDistance)
 	{
-		GameObject randomPrefab = GridInitialiser.Instance.RandomPiecePrefab ();
+		m_numPiecesFalling++;
 
-		Piece piece = m_gridCreator.GetPieceAt (0,6);
-		GameObject movingPiece = MovingPiecesController.Instance.CreateMovingPiece (randomPrefab.GetComponent<Piece>());
+		GameObject randomPiecePrefab = GridInitialiser.Instance.RandomPiecePrefab ();
+		GameObject movingPiece = MovingPiecesController.Instance.CreateMovingPiece (randomPiecePrefab.GetComponent<Piece>());
 		RectTransform rt = movingPiece.transform as RectTransform;
 		RectTransform cellRT = m_gridCreator.CellTransform (0, 0) as RectTransform;
 		rt.sizeDelta = cellRT.sizeDelta;
@@ -231,5 +231,12 @@ public class GridObserverMatch3 : GridObserver
 		Movement movement = movingPiece.GetComponent<Movement> ();
 
 		movement.MoveBy (offsetLocal, timeRequired, false);
+
+		yield return new WaitForSeconds (timeRequired);
+
+		Destroy (movingPiece);
+		m_gridCreator.AttachNewPieceToCell (randomPiecePrefab, x, y);
+
+		m_numPiecesFalling--;
 	}
 }

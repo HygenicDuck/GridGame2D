@@ -11,5 +11,4 @@ public class DragAndDropTouchController : TouchController
 		base.Start ();
 		GameControllerBase.Instance.m_dragAndDropIsActive = true;
 	}
-
 }

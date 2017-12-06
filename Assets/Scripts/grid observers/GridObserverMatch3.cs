@@ -18,6 +18,7 @@ public class GridObserverMatch3 : GridObserver
 
 	[SerializeField] public GameObject m_bubblePopEffect;
 	List<Group> m_matchingGroups = null;
+	int m_numPiecesFalling; 
 
 	protected override void Start () 
 	{
@@ -43,9 +44,12 @@ public class GridObserverMatch3 : GridObserver
 	{
 		m_doObserving = false;
 		DeleteAllMatchingGroups ();
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (0.1f);
 		RowsFallDown ();
-		yield return new WaitForSeconds (0.5f);
+		while (m_numPiecesFalling > 0)
+		{
+			yield return null;
+		}
 		m_doObserving = true;
 	}
 
@@ -119,6 +123,7 @@ public class GridObserverMatch3 : GridObserver
 
 	void RowsFallDown()
 	{
+		m_numPiecesFalling = 0;
 		for (int x = 0; x < m_gridCreator.m_gridYDim; x++)
 		{
 			SingleRowFallsDown(x);
@@ -147,16 +152,37 @@ public class GridObserverMatch3 : GridObserver
 			y -= 1;
 		}
 
-		// fill the gap left at the top with random pieces
-		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
-		{
-			m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
-		}
+//		// fill the gap left at the top with random pieces
+//		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
+//		{
+//			m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
+//		}
 	}
 
 	void MovePiece(IntVec2 from, IntVec2 to)
 	{
-		Piece piece = m_gridCreator.RemovePieceFromCell (from);
+		StartCoroutine (MovePieceCoroutine(from, to));
+	}
+
+	IEnumerator MovePieceCoroutine(IntVec2 from, IntVec2 to)
+	{
+		m_numPiecesFalling++;
+		const float PIECE_FALL_SPEED = 800f;
+		Piece piece = m_gridCreator.GetPieceAt (from);
+		Transform fromTrans = m_gridCreator.CellTransform (from.x, from.y);
+		Transform toTrans = m_gridCreator.CellTransform (to.x, to.y);
+		Vector3 offset = toTrans.localPosition - fromTrans.localPosition;
+		Debug.Log ("offset "+offset.x+", "+offset.y);
+		float timeRequired = offset.magnitude / PIECE_FALL_SPEED;
+
+		Movement movement = piece.GetComponent<Movement> ();
+
+		movement.MoveBy (offset, timeRequired, false);
+
+		yield return new WaitForSeconds (timeRequired);
+
+		piece = m_gridCreator.RemovePieceFromCell (from);
 		m_gridCreator.AttachExistingPieceToCell (piece, to.x, to.y);
+		m_numPiecesFalling--;
 	}
 }

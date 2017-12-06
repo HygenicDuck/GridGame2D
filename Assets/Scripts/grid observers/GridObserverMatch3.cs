@@ -123,7 +123,10 @@ public class GridObserverMatch3 : GridObserver
 			}
 			else
 			{
-				MovePiece (new IntVec2 (x, y), new IntVec2 (x, y + dropDistance));
+				if (dropDistance > 0)
+				{
+					MovePiece (new IntVec2 (x, y), new IntVec2 (x, y + dropDistance));
+				}
 			}
 
 			y -= 1;

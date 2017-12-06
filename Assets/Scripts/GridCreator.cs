@@ -74,7 +74,11 @@ public class GridCreator : MonoBehaviour {
 	public void AttachExistingPieceToCell(Piece piece, int x, int y)
 	{
 		GridCell cell = m_grid [x, y];
-        cell.RemovePiece();
+        Piece oldPiece = cell.RemovePiece();
+		if (oldPiece != null)
+		{
+			Destroy (oldPiece.gameObject);
+		}
 		cell.AttachPiece (piece);
 
 		// make the new piece the same size as the cell

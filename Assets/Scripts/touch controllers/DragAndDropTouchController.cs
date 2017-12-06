@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class DragAndDropTouchController : TouchController 
 {
 	// Use this for initialization
-	void Start () 
+	protected override void Start () 
 	{
+		base.Start ();
 		GameControllerBase.Instance.m_dragAndDropIsActive = true;
 	}
 

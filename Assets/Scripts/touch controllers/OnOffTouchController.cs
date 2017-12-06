@@ -13,8 +13,9 @@ public class OnOffTouchController : TouchController
 	bool m_touching;
 
 	// Use this for initialization
-	void Start () 
+	protected override void Start () 
 	{
+		base.Start ();
 		GameControllerBase.Instance.m_dragAndDropIsActive = false;
 	}
 

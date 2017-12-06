@@ -15,4 +15,21 @@ public class ColourPiece : Piece
 	}
 		
 	[SerializeField] PieceColour m_colour;
+
+	public PieceColour Colour
+	{
+		get { return m_colour; }
+	}
+
+	public override bool Equals(Piece p)
+	{
+		ColourPiece pc = p as ColourPiece;
+		if (pc == null)
+		{
+			return false;
+		}
+
+		return (pc.Colour == m_colour);
+	}
+
 }

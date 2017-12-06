@@ -83,6 +83,11 @@ public class GridCreator : MonoBehaviour {
 		rt.sizeDelta = new Vector2(sourceRect.width, sourceRect.height);
     }
 
+	public Piece RemovePieceFromCell(IntVec2 pos)
+	{
+		return RemovePieceFromCell(pos.x, pos.y);
+	}
+
 	public Piece RemovePieceFromCell(int x, int y)
 	{
 		GridCell cell = m_grid [x, y];
@@ -188,8 +193,18 @@ public class GridCreator : MonoBehaviour {
 		return false;
 	}
 
+	public Piece GetPieceAt(IntVec2 pos)
+	{
+		return GetPieceAt (pos.x, pos.y);
+	}
+
 	public Piece GetPieceAt(int x, int y)
 	{
+		if ((x < 0) || (y < 0) || (x >= m_gridXDim) || (y >= m_gridYDim))
+		{
+			return null;
+		}
+
 		GridCell cell = m_grid [x, y];
 		Piece piece = cell.GetAttachedPiece ();
 		return piece;

@@ -24,4 +24,26 @@ public class ChessPiece : Piece
 	}
 
 	[SerializeField] PieceType m_type;
+
+	public PieceColour Colour
+	{
+		get { return m_colour; }
+	}
+
+	public PieceType Type
+	{
+		get { return m_type; }
+	}
+
+
+	public override bool Equals(Piece p)
+	{
+		ChessPiece pc = p as ChessPiece;
+		if (pc == null)
+		{
+			return false;
+		}
+
+		return ((pc.Colour == m_colour) && (pc.Type == m_type));
+	}
 }

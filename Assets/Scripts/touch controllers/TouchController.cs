@@ -5,5 +5,10 @@ using UnityEngine.UI;
 
 public class TouchController : MonoBehaviour 
 {
-	[SerializeField] protected GridCreator m_gridCreator;
+	protected GridCreator m_gridCreator;
+
+	protected virtual void Start()
+	{
+		m_gridCreator = FindObjectOfType<GridCreator>();
+	}
 }

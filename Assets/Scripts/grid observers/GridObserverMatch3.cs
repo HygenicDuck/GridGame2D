@@ -152,11 +152,12 @@ public class GridObserverMatch3 : GridObserver
 			y -= 1;
 		}
 
-//		// fill the gap left at the top with random pieces
-//		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
-//		{
-//			m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
-//		}
+		// fill the gap left at the top with random pieces
+		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
+		{
+			AddPieceAtTop (x, gapY, dropDistance);
+			//m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
+		}
 	}
 
 	void MovePiece(IntVec2 from, IntVec2 to)
@@ -164,10 +165,11 @@ public class GridObserverMatch3 : GridObserver
 		StartCoroutine (MovePieceCoroutine(from, to));
 	}
 
+	const float PIECE_FALL_SPEED = 800f;
+
 	IEnumerator MovePieceCoroutine(IntVec2 from, IntVec2 to)
 	{
 		m_numPiecesFalling++;
-		const float PIECE_FALL_SPEED = 800f;
 		Piece piece = m_gridCreator.GetPieceAt (from);
 
 		GameObject movingPiece = MovingPiecesController.Instance.CreateMovingPiece (piece);
@@ -178,7 +180,6 @@ public class GridObserverMatch3 : GridObserver
 		Transform fromTrans = m_gridCreator.CellTransform (from.x, from.y);
 		Transform toTrans = m_gridCreator.CellTransform (to.x, to.y);
 		Vector3 offset = toTrans.localPosition - fromTrans.localPosition;
-		Debug.Log ("offset "+offset.x+", "+offset.y);
 		float timeRequired = offset.magnitude / PIECE_FALL_SPEED;
 
 		Movement movement = movingPiece.GetComponent<Movement> ();
@@ -192,5 +193,43 @@ public class GridObserverMatch3 : GridObserver
 		piece.gameObject.SetActive (true);
 		m_gridCreator.AttachExistingPieceToCell (piece, to.x, to.y);
 		m_numPiecesFalling--;
+	}
+
+
+	void AddPieceAtTop(int x, int y, int dropDistance)
+	{
+		GameObject randomPrefab = GridInitialiser.Instance.RandomPiecePrefab ();
+
+		Piece piece = m_gridCreator.GetPieceAt (0,6);
+		GameObject movingPiece = MovingPiecesController.Instance.CreateMovingPiece (randomPrefab.GetComponent<Piece>());
+		RectTransform rt = movingPiece.transform as RectTransform;
+		RectTransform cellRT = m_gridCreator.CellTransform (0, 0) as RectTransform;
+		rt.sizeDelta = cellRT.sizeDelta;
+
+		Transform cellTransform = m_gridCreator.CellTransform (x, y);
+		Vector3 destinationPosition = cellTransform.position;
+		Debug.Log ("destinationPosition "+destinationPosition.x+", "+destinationPosition.y);
+
+		Transform cell0 = m_gridCreator.CellTransform (x, 0);
+		Transform cell1 = m_gridCreator.CellTransform (x, 1);
+		Vector3 pitch = cell1.position - cell0.position;
+		Debug.Log ("pitch "+pitch.x+", "+pitch.y);
+		Vector3 offset = pitch * dropDistance;
+		Debug.Log ("offset "+offset.x+", "+offset.y);
+
+		Vector3 pitchLocal = cell1.localPosition - cell0.localPosition;
+		Debug.Log ("pitchLocal "+pitchLocal.x+", "+pitchLocal.y);
+		Vector3 offsetLocal = pitchLocal * dropDistance;
+		Debug.Log ("offsetLocal "+offsetLocal.x+", "+offsetLocal.y);
+
+
+		Vector3 sourcePosition = destinationPosition - offset;
+		Debug.Log ("sourcePosition "+sourcePosition.x+", "+sourcePosition.y);
+		movingPiece.transform.position = sourcePosition;
+
+		float timeRequired = offsetLocal.magnitude / PIECE_FALL_SPEED;
+		Movement movement = movingPiece.GetComponent<Movement> ();
+
+		movement.MoveBy (offsetLocal, timeRequired, false);
 	}
 }

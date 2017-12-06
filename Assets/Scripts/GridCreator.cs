@@ -99,6 +99,12 @@ public class GridCreator : MonoBehaviour {
 		return piece;
 	}
 
+	public Transform CellTransform(int x, int y)
+	{
+		GridCell cell = m_grid [x, y];
+		return cell.CellTransform ();
+	}
+
 
 	public bool IsAdjacent(IntVec2 pos1, IntVec2 pos2)
 	{

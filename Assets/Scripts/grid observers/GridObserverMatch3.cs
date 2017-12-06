@@ -16,6 +16,7 @@ public class GridObserverMatch3 : GridObserver
 		}
 	}
 
+	[SerializeField] public GameObject m_bubblePopEffect;
 	List<Group> m_matchingGroups = null;
 
 	protected override void Start () 
@@ -31,8 +32,21 @@ public class GridObserverMatch3 : GridObserver
 		}
 
 		ScanGridFor3InARow ();
+		if (m_matchingGroups.Count > 0)
+		{
+			StartCoroutine(BubblePopSequence ());
+		}
+
+	}
+
+	IEnumerator BubblePopSequence()
+	{
+		m_doObserving = false;
 		DeleteAllMatchingGroups ();
+		yield return new WaitForSeconds (0.5f);
 		RowsFallDown ();
+		yield return new WaitForSeconds (0.5f);
+		m_doObserving = true;
 	}
 
 	void ScanGridFor3InARow()
@@ -95,6 +109,7 @@ public class GridObserverMatch3 : GridObserver
 			if (piece != null)
 			{
 				Destroy (piece.gameObject);
+				GameObject effect = Instantiate (m_bubblePopEffect,m_gridCreator.CellTransform(cellPos.x, cellPos.y));
 			}
 			cellPos = cellPos + dPos;
 		}

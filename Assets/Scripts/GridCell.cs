@@ -35,4 +35,9 @@ public class GridCell : MonoBehaviour
 		piece.transform.localScale = Vector2.one;
 		piece.transform.localPosition = Vector2.zero;
 	}
+
+	public Transform CellTransform()
+	{
+		return transform;
+	}
 }

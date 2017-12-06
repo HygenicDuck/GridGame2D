@@ -173,6 +173,7 @@ public class GridObserverMatch3 : GridObserver
 		GameObject movingPiece = MovingPiecesController.Instance.CreateMovingPiece (piece);
 		movingPiece.transform.position = piece.transform.position;
 		piece.gameObject.SetActive (false);
+		m_gridCreator.RemovePieceFromCell (from);
 
 		Transform fromTrans = m_gridCreator.CellTransform (from.x, from.y);
 		Transform toTrans = m_gridCreator.CellTransform (to.x, to.y);
@@ -187,7 +188,7 @@ public class GridObserverMatch3 : GridObserver
 		yield return new WaitForSeconds (timeRequired);
 
 		Destroy (movingPiece);
-		piece = m_gridCreator.RemovePieceFromCell (from);
+		//piece = m_gridCreator.RemovePieceFromCell (from);
 		piece.gameObject.SetActive (true);
 		m_gridCreator.AttachExistingPieceToCell (piece, to.x, to.y);
 		m_numPiecesFalling--;

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class OnOffTouchController : TouchController 
 {
 	[SerializeField] GameObject m_usedPiece;
+	[SerializeField] bool m_deleteAdjacent;
 
 
 	Vector2 m_touchPosition;
@@ -46,11 +47,53 @@ public class OnOffTouchController : TouchController
 		}
 		else
 		{
-			if (piece.GetComponent<DragAndDrop> () == null)
+			if (m_deleteAdjacent)
+			{
+				DeletePieceAndSimilarNeighbours (gridPos);
+			}
+			else
 			{
 				Piece deletedPiece = m_gridCreator.RemovePieceFromCell (gridPos.x, gridPos.y);
 				Destroy (deletedPiece.gameObject);
 			}
 		}
+	}
+
+	void DeletePieceAndSimilarNeighbours(IntVec2 gridPos)
+	{
+		// recursive
+
+		Piece piece = m_gridCreator.RemovePieceFromCell (gridPos);
+
+		IntVec2 leftPos = gridPos + new IntVec2 (-1, 0);
+		Piece leftPiece = m_gridCreator.GetPieceAt (leftPos);
+		if ((leftPiece != null) && (leftPiece.Equals(piece)))
+		{
+			DeletePieceAndSimilarNeighbours(leftPos);
+		}
+
+		IntVec2 rightPos = gridPos + new IntVec2 (1, 0);
+		Piece rightPiece = m_gridCreator.GetPieceAt (rightPos);
+		if ((rightPiece != null) && (rightPiece.Equals(piece)))
+		{
+			DeletePieceAndSimilarNeighbours(rightPos);
+		}
+
+		IntVec2 upPos = gridPos + new IntVec2 (0, -1);
+		Piece upPiece = m_gridCreator.GetPieceAt (upPos);
+		if ((upPiece != null) && (upPiece.Equals(piece)))
+		{
+			DeletePieceAndSimilarNeighbours(upPos);
+		}
+
+		IntVec2 downPos = gridPos + new IntVec2 (0, 1);
+		Piece downPiece = m_gridCreator.GetPieceAt (downPos);
+		if ((downPiece != null) && (downPiece.Equals(piece)))
+		{
+			DeletePieceAndSimilarNeighbours(downPos);
+		}
+
+		Destroy (piece.gameObject);
+
 	}
 }

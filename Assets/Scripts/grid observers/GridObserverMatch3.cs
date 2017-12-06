@@ -27,6 +27,16 @@ public class GridObserverMatch3 : GridObserver
 
 	void Update()
 	{
+		if (m_pauseTimer > 0f)
+		{
+			m_pauseTimer -= Time.deltaTime;
+			if (m_pauseTimer < 0)
+			{
+				m_pauseTimer = 0f;
+			}
+			return;
+		}
+
 		if (!m_doObserving)
 		{
 			return;
@@ -35,7 +45,11 @@ public class GridObserverMatch3 : GridObserver
 		ScanGridFor3InARow ();
 		if (m_matchingGroups.Count > 0)
 		{
-			StartCoroutine(BubblePopSequence ());
+			StartCoroutine (BubblePopSequence ());
+		}
+		else if (ScanGridForAnyEmptyCells ())
+		{
+			StartCoroutine (FallingPiecesSequence ());
 		}
 
 	}
@@ -45,6 +59,12 @@ public class GridObserverMatch3 : GridObserver
 		m_doObserving = false;
 		DeleteAllMatchingGroups ();
 		yield return new WaitForSeconds (0.1f);
+		yield return FallingPiecesSequence ();
+	}
+
+	IEnumerator FallingPiecesSequence()
+	{
+		m_doObserving = false;
 		RowsFallDown ();
 		while (m_numPiecesFalling > 0)
 		{
@@ -66,6 +86,21 @@ public class GridObserverMatch3 : GridObserver
 				CheckFor3InARow (pos, new IntVec2 (0, 1));
 			}
 		}
+	}
+
+	bool ScanGridForAnyEmptyCells()
+	{
+		for(int y=0; y<m_gridCreator.m_gridYDim; y++)
+		{
+			for(int x=0; x<m_gridCreator.m_gridXDim; x++)
+			{
+				IntVec2 pos = new IntVec2 (x, y);
+				if (m_gridCreator.GetPieceAt (pos) == null)
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 
@@ -156,7 +191,6 @@ public class GridObserverMatch3 : GridObserver
 		for (int gapY = dropDistance - 1; gapY >= 0; gapY--)
 		{
 			StartCoroutine(AddPieceAtTopCoroutine (x, gapY, dropDistance));
-			//m_gridCreator.AttachNewPieceToCell (GridInitialiser.Instance.RandomPiecePrefab (), x, gapY);
 		}
 	}
 
@@ -189,7 +223,6 @@ public class GridObserverMatch3 : GridObserver
 		yield return new WaitForSeconds (timeRequired);
 
 		Destroy (movingPiece);
-		//piece = m_gridCreator.RemovePieceFromCell (from);
 		piece.gameObject.SetActive (true);
 		m_gridCreator.AttachExistingPieceToCell (piece, to.x, to.y);
 		m_numPiecesFalling--;
@@ -208,23 +241,16 @@ public class GridObserverMatch3 : GridObserver
 
 		Transform cellTransform = m_gridCreator.CellTransform (x, y);
 		Vector3 destinationPosition = cellTransform.position;
-		Debug.Log ("destinationPosition "+destinationPosition.x+", "+destinationPosition.y);
 
 		Transform cell0 = m_gridCreator.CellTransform (x, 0);
 		Transform cell1 = m_gridCreator.CellTransform (x, 1);
 		Vector3 pitch = cell1.position - cell0.position;
-		Debug.Log ("pitch "+pitch.x+", "+pitch.y);
 		Vector3 offset = pitch * dropDistance;
-		Debug.Log ("offset "+offset.x+", "+offset.y);
 
 		Vector3 pitchLocal = cell1.localPosition - cell0.localPosition;
-		Debug.Log ("pitchLocal "+pitchLocal.x+", "+pitchLocal.y);
 		Vector3 offsetLocal = pitchLocal * dropDistance;
-		Debug.Log ("offsetLocal "+offsetLocal.x+", "+offsetLocal.y);
-
 
 		Vector3 sourcePosition = destinationPosition - offset;
-		Debug.Log ("sourcePosition "+sourcePosition.x+", "+sourcePosition.y);
 		movingPiece.transform.position = sourcePosition;
 
 		float timeRequired = offsetLocal.magnitude / PIECE_FALL_SPEED;

@@ -30,6 +30,7 @@ public abstract class GameControllerBase : MonoBehaviour
 		if (piece != null)
 		{
 			MovePiece (piece, newPos);
+			GridObserver.Instance.PauseObserving (0.1f);	// slight delay so that you can see the moved pieces before they are popped
 		}
 	}
 }

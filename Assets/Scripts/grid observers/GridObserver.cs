@@ -6,7 +6,23 @@ public class GridObserver : MonoBehaviour
 {
 	protected GridCreator m_gridCreator;
 	protected bool m_doObserving = false;
+	protected float m_pauseTimer = 0f;
 
+	static GridObserver m_instance = null;
+
+
+	public static GridObserver Instance
+	{
+		get
+		{
+			return m_instance;
+		}
+	}
+
+	public GridObserver()
+	{
+		m_instance = this;
+	}
 
 	protected virtual void Start()
 	{
@@ -18,6 +34,12 @@ public class GridObserver : MonoBehaviour
 	IEnumerator EnableAfterShortDelay()
 	{
 		yield return null;
+		yield return null;
 		m_doObserving = true;
+	}
+
+	public void PauseObserving(float time)
+	{
+		m_pauseTimer = time;
 	}
 }

@@ -40,8 +40,16 @@ public class GridObserverColourMatch3 : GridObserverMatch3
 				return false;
 			}
 		}
-								
-		m_matchingGroups.Add(new Group(firstPos, dPos));
+							
+		Group group = new Group ();
+		cellPos = firstPos;
+		for (int i = 0; i < 3; i++)
+		{
+			group.AddPosition (cellPos);
+			cellPos = cellPos + dPos;
+		}
+		m_matchingGroups.Add(group);
+
 		return true;
 	}
 }

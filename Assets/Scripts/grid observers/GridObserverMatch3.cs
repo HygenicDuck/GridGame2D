@@ -6,13 +6,16 @@ public abstract class GridObserverMatch3 : GridObserver
 {
 	protected class Group
 	{
-		public IntVec2 position;
-		public IntVec2 direction;
+		public List<IntVec2> positions;
 
-		public Group(IntVec2 p, IntVec2 dir)
+		public Group()
 		{
-			position = p;
-			direction = dir;
+			positions = new List<IntVec2>();
+		}
+
+		public void AddPosition(IntVec2 p)
+		{
+			positions.Add (p);
 		}
 	}
 
@@ -95,15 +98,15 @@ public abstract class GridObserverMatch3 : GridObserver
 	{
 		foreach (Group g in m_matchingGroups)
 		{
-			DeleteGroup (g.position, g.direction);
+			DeleteGroup (g);
 		}
 
 		m_matchingGroups.Clear ();
 	}
 
-	void DeleteGroup(IntVec2 cellPos, IntVec2 dPos)
+	void DeleteGroup(Group g)
 	{
-		for (int i = 0; i < 3; i++)
+		foreach (IntVec2 cellPos in g.positions)
 		{
 			Piece piece = m_gridCreator.RemovePieceFromCell (cellPos);
 			if (piece != null)
@@ -111,7 +114,6 @@ public abstract class GridObserverMatch3 : GridObserver
 				Destroy (piece.gameObject);
 				GameObject effect = Instantiate (m_bubblePopEffect,m_gridCreator.CellTransform(cellPos.x, cellPos.y));
 			}
-			cellPos = cellPos + dPos;
 		}
 	}
 

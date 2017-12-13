@@ -218,7 +218,7 @@ public class GridObserverMatch3 : GridObserver
 
 		Movement movement = movingPiece.GetComponent<Movement> ();
 
-		movement.MoveBy (offset, timeRequired, false);
+		movement.MoveBy (offset, timeRequired, Movement.MoveMode.USECURVE);
 
 		yield return new WaitForSeconds (timeRequired);
 
@@ -256,7 +256,7 @@ public class GridObserverMatch3 : GridObserver
 		float timeRequired = offsetLocal.magnitude / PIECE_FALL_SPEED;
 		Movement movement = movingPiece.GetComponent<Movement> ();
 
-		movement.MoveBy (offsetLocal, timeRequired, false);
+		movement.MoveBy (offsetLocal, timeRequired, Movement.MoveMode.USECURVE);
 
 		yield return new WaitForSeconds (timeRequired);
 

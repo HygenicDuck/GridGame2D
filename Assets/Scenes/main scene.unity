@@ -377,10 +377,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1211013168}
-  - component: {fileID: 1211013170}
   - component: {fileID: 1211013169}
   - component: {fileID: 1211013171}
   - component: {fileID: 1211013167}
+  - component: {fileID: 1211013170}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -436,11 +436,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_piecesPrefabs:
-  - {fileID: 1678665778189816, guid: 07b19964f14514c4e88afa91e3f6e4c1, type: 2}
-  - {fileID: 1502508996372634, guid: 5303c4a67459a4532958b1c0ae4b9a61, type: 2}
-  - {fileID: 1481486739325412, guid: c3072e74725a44106b770281b8ce4de2, type: 2}
-  - {fileID: 1918264300606380, guid: 6b2d9692d543844c9989e3f63e8684b8, type: 2}
-  - {fileID: 1918264300606380, guid: ac8b15445e5494398822ee805e384293, type: 2}
+  - {fileID: 1918264300606380, guid: e17a70cc545a44fe68e6573a773a6e32, type: 2}
+  - {fileID: 1918264300606380, guid: 90f4fd5f25dce4dd6b40da8b2a556f63, type: 2}
+  - {fileID: 1918264300606380, guid: c386bdf7a134842a9939554ff8405643, type: 2}
+  - {fileID: 1918264300606380, guid: ff74f932644c44cd18290b78b7cd7d16, type: 2}
+  - {fileID: 1918264300606380, guid: 46c0c074884ef46398f9480e909b6e7e, type: 2}
+  - {fileID: 1918264300606380, guid: f570cd64ac4b14f6d9efbe53c38580f9, type: 2}
+  - {fileID: 1918264300606380, guid: 451d54fde74c14e43898d0ee4c500855, type: 2}
+  - {fileID: 1918264300606380, guid: aea7b17f50d234b8bb6e84f333d2f965, type: 2}
+  - {fileID: 1918264300606380, guid: 3d262e58b54dd4f6b81c5c7cfbdae3e2, type: 2}
+  - {fileID: 1918264300606380, guid: cab2da16dd720437b90f8d57f1048d8f, type: 2}
 --- !u!114 &1211013171
 MonoBehaviour:
   m_ObjectHideFlags: 0

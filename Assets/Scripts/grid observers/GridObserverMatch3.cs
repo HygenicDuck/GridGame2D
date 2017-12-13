@@ -17,6 +17,24 @@ public abstract class GridObserverMatch3 : GridObserver
 		{
 			positions.Add (p);
 		}
+
+		public bool ContainsPos(IntVec2 p)
+		{
+			foreach (IntVec2 p2 in positions)
+			{
+				if (p == p2)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public int NumGridCells()
+		{
+			return positions.Count;
+		}
 	}
 
 	[SerializeField] public GameObject m_bubblePopEffect;
@@ -26,6 +44,19 @@ public abstract class GridObserverMatch3 : GridObserver
 	protected override void Start () 
 	{
 		base.Start ();
+	}
+
+	protected bool CellIsAlreadyInAGroup(IntVec2 cellPos)
+	{
+		foreach (Group grp in m_matchingGroups)
+		{
+			if (grp.ContainsPos (cellPos))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void Update()
@@ -91,6 +122,11 @@ public abstract class GridObserverMatch3 : GridObserver
 		}
 
 		return false;
+	}
+
+	protected bool OnGrid(IntVec2 pos)
+	{
+		return (pos.x >= 0 && pos.x < m_gridCreator.m_gridXDim && pos.y >= 0 && pos.y < m_gridCreator.m_gridYDim);
 	}
 
 

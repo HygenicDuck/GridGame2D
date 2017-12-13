@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridObserverPipeMatch3 : GridObserverMatch3 
 {
+
 	protected override void ScanGridForGroups()
 	{
 		m_matchingGroups = new List<Group> ();
@@ -13,44 +14,91 @@ public class GridObserverPipeMatch3 : GridObserverMatch3
 			for(int x=0; x<m_gridCreator.m_gridXDim; x++)
 			{
 				IntVec2 pos = new IntVec2 (x, y);
-				CheckFor3InARow (pos, new IntVec2 (1, 0));
-				CheckFor3InARow (pos, new IntVec2 (0, 1));
+				CheckForConnectedPipe (pos);
 			}
 		}
 	}
 
 
-	bool CheckFor3InARow(IntVec2 firstPos, IntVec2 dPos)
+	void CheckForConnectedPipe(IntVec2 firstPos)
 	{
-		// checks for 3 matching cells, starting at cellPos, and adding dPos each time.
+		if (CellIsAlreadyInAGroup (firstPos))
+		{
+			return;
+		}
 
-		IntVec2 cellPos = firstPos;
-		Piece p = m_gridCreator.GetPieceAt (cellPos);
+		Group grp = new Group ();
+		// search recursively for all adjacent pipe segments
+		CheckAdjacentPipeSegments (firstPos, grp, PipePiece.Connector.ANY);
+		if (grp.NumGridCells () >= 3)
+		{
+			m_matchingGroups.Add (grp);
+		}
+	}
+
+
+	void CheckAdjacentPipeSegments(IntVec2 cellPos, Group grp, PipePiece.Connector requiredConnector)
+	{
+		// recursive
+
+		if (!OnGrid (cellPos) || grp.ContainsPos(cellPos))
+		{
+			return;
+		}
+
+		PipePiece p = m_gridCreator.GetPieceAt (cellPos) as PipePiece;
 		if (p == null)
 		{
-			return false;
+			return;
 		}
 
-		for (int i = 0; i < 2; i++)
+		if (!p.HasConnector (requiredConnector))
 		{
-			cellPos = cellPos + dPos;
-			Piece p2 = m_gridCreator.GetPieceAt (cellPos);
-			if ((p2 == null) || !p.Equals (p2))
-			{
-				return false;
-			}
+			return;
 		}
-								
-		Group group = new Group ();
-		cellPos = firstPos;
-		for (int i = 0; i < 3; i++)
-		{
-			group.AddPosition (cellPos);
-			cellPos = cellPos + dPos;
-		}
-		m_matchingGroups.Add(group);
 
-		return true;
+		grp.AddPosition (cellPos);
+
+		switch (p.m_type)
+		{
+		case PipePiece.PieceType.END_RIGHT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (1, 0), grp, PipePiece.Connector.LEFT);
+			break;
+		case PipePiece.PieceType.END_LEFT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (-1, 0), grp, PipePiece.Connector.RIGHT);
+			break;
+		case PipePiece.PieceType.END_UP:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, -1), grp, PipePiece.Connector.DOWN);
+			break;
+		case PipePiece.PieceType.END_DOWN:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, 1), grp, PipePiece.Connector.UP);
+			break;
+		case PipePiece.PieceType.HORIZONTAL:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (1, 0), grp, PipePiece.Connector.LEFT);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (-1, 0), grp, PipePiece.Connector.RIGHT);
+			break;
+		case PipePiece.PieceType.VERTICAL:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, 1), grp, PipePiece.Connector.UP);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, -1), grp, PipePiece.Connector.DOWN);
+			break;
+		case PipePiece.PieceType.UP_LEFT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (-1, 0), grp, PipePiece.Connector.RIGHT);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, -1), grp, PipePiece.Connector.DOWN);
+			break;
+		case PipePiece.PieceType.UP_RIGHT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (1, 0), grp, PipePiece.Connector.LEFT);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, -1), grp, PipePiece.Connector.DOWN);
+			break;
+		case PipePiece.PieceType.DOWN_LEFT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (-1, 0), grp, PipePiece.Connector.RIGHT);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, 1), grp, PipePiece.Connector.UP);
+			break;
+		case PipePiece.PieceType.DOWN_RIGHT:
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (1, 0), grp, PipePiece.Connector.LEFT);
+			CheckAdjacentPipeSegments (cellPos + new IntVec2 (0, 1), grp, PipePiece.Connector.UP);
+			break;
+		}
 	}
+
 
 }
